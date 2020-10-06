@@ -26,10 +26,10 @@ function init() {
           choices: [
             "View All Employees",
             "View All Employees by Department",
+            "Update Employee Role",
             "View All Employees by Manager",
             "Add Employee",
             "Remove Employee",
-            "Update Employee Role",
             "Update Employee Manager",
             "Exit"
           ],
@@ -41,15 +41,13 @@ function init() {
           viewAllEmployees();
         } else if (selection === "View All Employees by Department") {
           viewByDepartment();
-        } else if (selection === "View All Employees by Manager") {
-          //functionName();
         } else if (selection === "Update Employee Role") {
-          //functionName();
+          updateEmployeeRole();
+        } else if (selection === "View All Employees by Manager") {
+          viewByManager();
         } else if (selection === "Add Employee") {
           //functionName();
         } else if (selection === "Remove Employee") {
-          //functionName();
-        } else if (selection === "Update Employee Role") {
           //functionName();
         } else if (selection === "Update Employee Manager") {
           //functionName();
@@ -71,7 +69,7 @@ function init() {
                 }
           );
           init();
-        };
+    };
 
 
     function viewByDepartment() {
@@ -89,4 +87,104 @@ function init() {
         init();
     };
 
-    
+    function updateEmployeeRole() {
+        connection.query("SELECT first_name, id FROM employee", function (err, res) {
+            if(err) throw err;
+            let empID;
+            const employeeArray = [];
+            console.table(res);
+            if (res.length > 0) {
+                for (let i = 0; i < res.length; i++) {
+                    console.log(res[i].id)
+                    const employeeObject = {
+                        name: res[i].first_name, value: res[i].id
+                    }
+                    employeeArray.push(employeeObject)
+                }
+            }
+            inquirer.prompt([
+                {
+                    name: "employeeSelection",
+                    message: "Which employee would you like to update?",
+                    type: "list",
+                    choices: employeeArray
+                },
+            ])
+            .then((response) => {
+                empID = response.employeeSelection
+                console.log(empID)
+                inquirer.prompt([
+                    {
+                        name: "newRole",
+                        message: "What is the employee's new role?",
+                        type: "list",
+                        choices: [
+                            "Sales Lead",
+                            "Sales Person",
+                            "Lead Engineer",
+                            "Software Developer",
+                            "Accountant",
+                            "Legal Team Lead",
+                            "Lawyer",
+                            "Marketing Specialist"
+                            ]
+                    }
+                ]).then((newrole) => {
+                    //console.log(newrole);
+                    connection.query("UPDATE employee SET ? WHERE ?", 
+                    [
+                        {
+                            role_id: newrole
+                        },
+                        {
+                            id: empID
+                        }
+                    ],
+                    (err, res) => {
+                        if(err) throw err;
+                        console.table(res)
+                    }
+                    
+                    
+                    )
+                })
+            })
+        })
+        init();
+    };
+
+
+
+    //BONUS POINTS
+    function viewByManager() {
+        connection.query(
+        `SELECT employee.id, employee.first_name, employee.last_name, role.title, CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+        FROM employee
+        LEFT JOIN role ON employee.role_id = role.id
+        LEFT JOIN department ON role.department_id = department.id
+        LEFT JOIN employee AS manager ON employee.manager_id = manager.id;`,
+            (err, data) => {
+                if (err) throw err;
+                console.table(data);
+            }
+        );
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function addEmployee() {
+        connection.query("SELECT title, id FROM role")
+    }
+
