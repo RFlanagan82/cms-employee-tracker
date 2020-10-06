@@ -38,9 +38,9 @@ function init() {
       .then(({ selection }) => {
         console.log(selection);
         if (selection === "View All Employees") {
-          //functionName();
+          viewAllEmployees();
         } else if (selection === "View All Employees by Department") {
-          //functionName();
+          viewByDepartment();
         } else if (selection === "View All Employees by Manager") {
           //functionName();
         } else if (selection === "Update Employee Role") {
@@ -58,3 +58,35 @@ function init() {
         }
       });
     }
+
+    function viewAllEmployees() {
+        connection.query(
+            `Select employee.id, first_name, last_name, role_id, manager_id, title, 
+            salary From employee
+            RIGHT JOIN role
+            ON employee.role_id = role.id;`, 
+            (err, data) => {
+                if (err) throw err;
+                console.table(data);
+                }
+          );
+          init();
+        };
+
+
+    function viewByDepartment() {
+        connection.query(
+            `SELECT employee.id, first_name, last_name, manager_id, title, department.name From employee
+            RIGHT JOIN role
+            ON employee.role_id = role.id
+            LEFT Join department
+            ON department.id = role.department_id;`,
+            (err, data) => {
+                if (err) throw err;
+                console.table(data);
+            }
+        );
+        init();
+    };
+
+    
