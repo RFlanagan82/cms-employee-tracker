@@ -28,9 +28,9 @@ function init() {
             "View All Employees by Department",
             "Update Employee Role",
             "View All Employees by Manager",
-            "Add Employee",
-            "Remove Employee",
-            "Update Employee Manager",
+            // "Add Employee",
+            // "Remove Employee",
+            // "Update Employee Manager",
             "Exit"
           ],
         },
@@ -45,13 +45,13 @@ function init() {
           updateEmployeeRole();
         } else if (selection === "View All Employees by Manager") {
           viewByManager();
-        } else if (selection === "Add Employee") {
-          //functionName();
-        } else if (selection === "Remove Employee") {
-          //functionName();
-        } else if (selection === "Update Employee Manager") {
-          //functionName();
-        } else {
+        // } else if (selection === "Add Employee") {
+        //   //functionName();
+        // } else if (selection === "Remove Employee") {
+        //   //functionName();
+        // } else if (selection === "Update Employee Manager") {
+        //   //functionName();
+        // } else {
             connection.end();
         }
       });
@@ -90,7 +90,6 @@ function init() {
     function updateEmployeeRole() {
         connection.query("SELECT first_name, id FROM employee", function (err, res) {
             if(err) throw err;
-            let empID;
             const employeeArray = [];
             console.table(res);
             if (res.length > 0) {
@@ -113,46 +112,52 @@ function init() {
             .then((response) => {
                 empID = response.employeeSelection
                 console.log(empID)
-                inquirer.prompt([
-                    {
-                        name: "newRole",
-                        message: "What is the employee's new role?",
-                        type: "list",
-                        choices: [
-                            "Sales Lead",
-                            "Sales Person",
-                            "Lead Engineer",
-                            "Software Developer",
-                            "Accountant",
-                            "Legal Team Lead",
-                            "Lawyer",
-                            "Marketing Specialist"
-                            ]
+                //loop through roles and make an array of objects with name and value and then put it in choices
+                const rolesArray = [];
+                console.log(rolesArray)
+                if (res.length > 0) {
+                    for (let i = 0; i < res.length; i++) {
+                        console.log(res[i].id)
+                        const rolesObject = {
+                            role: res[i].title, value: res[i].id
                     }
-                ]).then((newrole) => {
+                    rolesArray.push(rolesObject)
+                }
+            }
+            inquirer.prompt([
+                {
+                    name: "newRole",
+                    message: "What is the employee's new role?",
+                    type: "list",
+                    choices: rolesArray
+                        //{ name: "Sales Lead",value: 1},
+                    
+                },
+            ])
+
+            .then((newrole) => {
                     //console.log(newrole);
-                    connection.query("UPDATE employee SET ? WHERE ?", 
+                    let empName = employeeArray;
+                    let newRole = rolesArray;
+                    connection.query("UPDATE employee SET employee.role_id = ? WHERE employee.id = ?", 
                     [
                         {
-                            role_id: newrole
+                            newRole
                         },
                         {
-                            id: empID
+                            empName
                         }
                     ],
                     (err, res) => {
                         if(err) throw err;
                         console.table(res)
                     }
-                    
-                    
                     )
                 })
             })
         })
         init();
     };
-
 
 
     //BONUS POINTS
@@ -168,23 +173,9 @@ function init() {
                 console.table(data);
             }
         );
+        init();
     };
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    function addEmployee() {
-        connection.query("SELECT title, id FROM role")
-    }
 
