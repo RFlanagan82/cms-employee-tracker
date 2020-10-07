@@ -28,7 +28,7 @@ function init() {
             "View All Employees by Department",
             "Update Employee Role",
             "View All Employees by Manager",
-            // "Add Employee",
+            "Add Employee",
             // "Remove Employee",
             // "Update Employee Manager",
             "Exit"
@@ -45,8 +45,8 @@ function init() {
           updateEmployeeRole();
         } else if (selection === "View All Employees by Manager") {
           viewByManager();
-        // } else if (selection === "Add Employee") {
-        //   //functionName();
+        } else if (selection === "Add Employee") {
+          addEmployee();
         // } else if (selection === "Remove Employee") {
         //   //functionName();
         // } else if (selection === "Update Employee Manager") {
@@ -160,6 +160,66 @@ function init() {
     };
 
 
+    function addEmployee() {
+        connection.query("Select title, id FROM role", function(err,res){
+            if (err) throw err;
+            const roleArray = [];
+            if (res.length > 0) {
+                for (let i = 0; i < res.length; i++){
+                    const roleObject = {
+                        name: res[i].title,
+                        value: res[i].id,
+                    };
+                    roleArray.push(roleObject);
+                }            
+            }
+        });
+        inquirer.prompt([
+            {
+                name: "firstName",
+                message: "What is the employee's first name you wish to add?",
+                type: "input"
+            },
+            {
+                name: "lastName",
+                message: "What is the employee's last name you wish to add?",
+                type: "input"
+            },
+            {
+                name: "title",
+                message: "What is the new employee's role?",
+                type: "input"
+            },
+            {
+                name: "empMgr",
+                message: "Who is the employee's manager?",
+                type: "list",
+                choices: [
+                    "None",
+                    "Sal Singleton",
+                    "David Clyburn",
+                    "Buster Crawley",
+
+                ]
+            },
+        ])
+        .then(({ firstName, lastName, role, empMgr}) => {
+            console.log(`${firstName} ${lastName} was added as a new employee`)
+            connection.query("INSERT INTO employee SET = ?",
+            {
+                first_name: firstName,
+                last_name: lastName,
+                role_id: role,
+                manager: empMgr
+            }),
+            (err, res) => {
+                if(err) throw err;
+                console.table(res)
+            }  
+        })
+        //init();
+    }
+
     //BONUS POINTS
     function viewByManager() {
         connection.query(
@@ -175,6 +235,8 @@ function init() {
         );
         init();
     };
+
+
 
 
 
