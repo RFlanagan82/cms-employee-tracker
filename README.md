@@ -2,7 +2,7 @@
 This app is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL
 
 ## Deployed Application Review
-[Watch the video demonstrating the application here:]()
+[Watch the video demonstrating the application here:](https://drive.google.com/file/d/1LhCAM8bURILYE5UZf0gukyYdNdmFUrM9/view)
 
 ## Contents
 This application contains an assets directory which holds all related project images and the instructions.md
