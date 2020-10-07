@@ -82,21 +82,19 @@ function init() {
             (err, data) => {
                 if (err) throw err;
                 console.table(data);
+                init();
             }
         );
-        init();
     };
 
     function updateEmployeeRole() {
-        connection.query("SELECT first_name, id FROM employee", function (err, res) {
+        connection.query("SELECT first_name, last_name, id FROM employee", function (err, res) {
             if(err) throw err;
             const employeeArray = [];
-            console.table(res);
             if (res.length > 0) {
                 for (let i = 0; i < res.length; i++) {
-                    console.log(res[i].id)
                     const employeeObject = {
-                        name: res[i].first_name, value: res[i].id
+                        name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id
                     }
                     employeeArray.push(employeeObject)
                 }
@@ -110,58 +108,59 @@ function init() {
                 },
             ])
             .then((response) => {
-                empID = response.employeeSelection
-                console.log(empID)
+                const empID = response.employeeSelection
                 //loop through roles and make an array of objects with name and value and then put it in choices
-                const rolesArray = [];
-                console.log(rolesArray)
-                if (res.length > 0) {
-                    for (let i = 0; i < res.length; i++) {
-                        console.log(res[i].id)
-                        const rolesObject = {
-                            role: res[i].title, value: res[i].id
-                    }
-                    rolesArray.push(rolesObject)
-                }
-            }
-            inquirer.prompt([
-                {
-                    name: "newRole",
-                    message: "What is the employee's new role?",
-                    type: "list",
-                    choices: rolesArray
-                        //{ name: "Sales Lead",value: 1},
-                    
-                },
-            ])
-
-            .then((newrole) => {
-                    //console.log(newrole);
-                    let empName = employeeArray;
-                    let newRole = rolesArray;
-                    connection.query("UPDATE employee SET employee.role_id = ? WHERE employee.id = ?", 
-                    [
-                        {
-                            newRole
-                        },
-                        {
-                            empName
+                connection.query("SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id", (err,res) => {
+                    if (err) throw err
+                    const rolesArray = [];
+                    if (res.length > 0) {
+                        for (let i = 0; i < res.length; i++) {
+                            const rolesObject = {
+                                name: res[i].title, value: res[i].id
+                            }
+                        rolesArray.push(rolesObject)
                         }
-                    ],
-                    (err, res) => {
-                        if(err) throw err;
-                        console.table(res)
                     }
-                    )
+
+                    inquirer.prompt([
+                        {
+                            name: "newRole",
+                            message: "What is the employee's new role?",
+                            type: "list",
+                            choices: rolesArray
+                                //{ name: "Sales Lead",value: 1},
+                            
+                        },
+                    ])
+
+                    .then((newrole) => {
+                        const roleId = newrole.newRole
+                            //let empName = employeeArray.filter(emp => emp.value === roleId);
+                            //console.log('newrole', newrole.newRole);
+                            //console.log(employeeArray)
+                            //console.log(empName)
+                            //let newRole = rolesArray;
+                            connection.query("UPDATE employee SET role_id = ? WHERE id = ?", 
+                            [roleId, empID],
+                            (err, res) => {
+                                if(err) throw err;
+                                connection.query("SELECT * FROM employee WHERE employee.id = ?", empID, (err, res) => {
+                                    if(err)throw err;
+                                    console.table(res)
+                                    init();
+                                })
+                                
+                            }
+                            )
+                        })
+                    })
                 })
-            })
         })
-        init();
     };
 
 
     function addEmployee() {
-        connection.query("Select title, id FROM role", function(err,res){
+        connection.query("SELECT title, id FROM role", function(err,res){
             if (err) throw err;
             const roleArray = [];
             if (res.length > 0) {
@@ -173,51 +172,54 @@ function init() {
                     roleArray.push(roleObject);
                 }            
             }
-        });
-        inquirer.prompt([
-            {
-                name: "firstName",
-                message: "What is the employee's first name you wish to add?",
-                type: "input"
-            },
-            {
-                name: "lastName",
-                message: "What is the employee's last name you wish to add?",
-                type: "input"
-            },
-            {
-                name: "title",
-                message: "What is the new employee's role?",
-                type: "input"
-            },
-            {
-                name: "empMgr",
-                message: "Who is the employee's manager?",
-                type: "list",
-                choices: [
-                    "None",
-                    "Sal Singleton",
-                    "David Clyburn",
-                    "Buster Crawley",
 
-                ]
-            },
-        ])
-        .then(({ firstName, lastName, role, empMgr}) => {
-            console.log(`${firstName} ${lastName} was added as a new employee`)
-            connection.query("INSERT INTO employee SET = ?",
-            {
-                first_name: firstName,
-                last_name: lastName,
-                role_id: role,
-                manager: empMgr
-            }),
-            (err, res) => {
-                if(err) throw err;
-                console.table(res)
-            }  
-        })
-        //init();
+            inquirer.prompt([
+                {
+                    name: "firstName",
+                    message: "What is the employee's first name you wish to add?",
+                    type: "input"
+                },
+                {
+                    name: "lastName",
+                    message: "What is the employee's last name you wish to add?",
+                    type: "input"
+                },
+                {
+                    name: "title",
+                    message: "What is the new employee's role?",
+                    type: "list",
+                    choices: roleArray 
+                },
+                {
+                    name: "empMgr",
+                    message: "Who is the employee's manager?",
+                    type: "list",
+                    choices: [
+                        {name: "None", value: null},
+                        {name: "Sal Singleton", value: 3},
+                        {name: "David Clyburn", value: 1},
+                        {name: "Buster Crawley", value: 6},
+                    ]
+                }
+            ])
+            .then(({ firstName, lastName, title, empMgr}) => {
+                console.log(`${firstName} ${lastName} was added as a new employee`)
+                console.log(firstName, lastName, title, empMgr);
+                connection.query("INSERT INTO employee SET ?",
+                {
+                    manager_id: empMgr,
+                    role_id: title,
+                    first_name: firstName,
+                    last_name: lastName
+                },
+                //[firstName,lastName,title,empMgr],
+                (err, res) => {
+                    if(err) throw err;
+                    //console.table(res)
+                    init();
+                })
+            })
+        });
     }
 
     //BONUS POINTS
@@ -231,9 +233,9 @@ function init() {
             (err, data) => {
                 if (err) throw err;
                 console.table(data);
+                init();
             }
         );
-        init();
     };
 
 

@@ -2,7 +2,7 @@
 This app is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL
 
 ## Deployed Application Review
-[Watch the video demonstrating the application here:](https://drive.google.com/file/d/1LhCAM8bURILYE5UZf0gukyYdNdmFUrM9/view)
+[Watch the video demonstrating the application here:]()
 
 ## Contents
 This application contains an assets directory which holds all related project images and the instructions.md
@@ -49,13 +49,11 @@ You'll notice that I have also created the following 2 sql files to support the 
 
 ## Challenges
 
-Although the first part of the Update Employee Role function works, I had significant challenges around, and ultimately wasn't successful in making an update to a requested employee selection.
+Although the first part of the Add Employee Role function works, I had significant challenges around, and ultimately wasn't successful in getting it to actually update the database.
 
-Here is what I got right.
-![](./assets/update_emp_initially_works.png)
+Here is the error...
+![](./assets/add_employee_function_error)
 
-But then I can't get the desired job position to change show or complete.
-![](./assets/update_emp_error.png)
 
 ## Resources
 * [Learn SQL: Join muliple tables](https://www.sqlshack.com/learn-sql-join-multiple-tables/)
@@ -66,7 +64,9 @@ But then I can't get the desired job position to change show or complete.
 ## Credits and Contributions
 On 10-6-2020, I spent some time during the lunch break listening to TA- Peter Colella work the Update Employee Role function with a fellow classmate.
 
-Later that afternoon, I spent some time with my tutor, Andrew Hardemon - who helped me add in my Foreign Key values in the employeetracker.sql file, and View By Manager concat issues as well as troubleshooting the Employee Update Role function before it was at the end of our time.
+Later that afternoon, I spent some time with my tutor, Andrew Hardemon - who helped me add in my Foreign Key values in the employeetracker.sql file, troubleshoot my View By Manager concat issues, and Employee Update Role function.
+
+He also worked with me to help troubleshoot the Employee Update Role function before it was at the end of our time.
 
 
 ## Badge
