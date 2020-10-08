@@ -140,21 +140,19 @@ function init() {
                             //console.log(employeeArray)
                             //console.log(empName)
                             //let newRole = rolesArray;
-                            connection.query("UPDATE employee SET role_id = ? WHERE id = ?", 
-                            [roleId, empID],
-                            (err, res) => {
-                                if(err) throw err;
-                                connection.query("SELECT * FROM employee WHERE employee.id = ?", empID, (err, res) => {
-                                    if(err)throw err;
-                                    console.table(res)
-                                    init();
-                                })
-                                
-                            }
-                            )
+                        connection.query("UPDATE employee SET role_id = ? WHERE id = ?", 
+                        [roleId, empID],
+                        (err, res) => {
+                            if(err) throw err;
+                            connection.query("SELECT * FROM employee WHERE employee.id = ?", empID, (err, res) => {
+                                if(err)throw err;
+                                console.table(res)
+                                init();
+                            })
                         })
                     })
                 })
+            })
         })
     };
 
