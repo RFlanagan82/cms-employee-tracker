@@ -52,7 +52,7 @@ You'll notice that I have also created the following 2 sql files to support the 
 Although the first part of the Add Employee Role function works, I had significant challenges around, and ultimately wasn't successful in getting it to actually update the database.
 
 Here is the error...
-![](./assets/add_employee_function_error)
+![](./assets/add_employee_function_error.png)
 
 
 ## Resources
