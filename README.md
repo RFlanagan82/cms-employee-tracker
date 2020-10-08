@@ -2,7 +2,7 @@
 This app is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL
 
 ## Deployed Application Review
-[Watch the video demonstrating the application here:]()
+[Watch the video demonstrating the application here:](https://drive.google.com/file/d/1sBZPYdPLPDSWuOBqiKflN5-I-g0Y_wn7/view)
 
 ## Contents
 This application contains an assets directory which holds all related project images and the instructions.md
@@ -38,6 +38,9 @@ Or if you select view employees by department - this is what you will see:
 For the bonus requirements: I also was able to successfully show employees by manager as shown here:
 ![](./assets/view_emp_by_mgr.png)
 
+An additional bonus achieved is in the working Update Employee role function shown here:
+![](./assets/update_employee_role.png)
+
 You'll notice that I have also created the following 2 sql files to support the datasets:
 
 *[employeetracker.sql](https://github.com/RFlanagan82/cms-employee-tracker/blob/main/employeetracker.sql)
@@ -49,10 +52,12 @@ You'll notice that I have also created the following 2 sql files to support the 
 
 ## Challenges
 
-Although the first part of the Add Employee Role function works, I had significant challenges around, and ultimately wasn't successful in getting it to actually update the database.
+Although the first part of the "Add Employee Role" function works, I had significant challenges around, and ultimately wasn't successful in getting it to actually update the database.
 
 Here is the error...
-![](./assets/add_employee_function_err.png)
+![](./assets/add_employee_function_error)
+
+I understand that this was one of the minimum requirements of the assignment however I hope that by completing the Update Employee Role function and Search Employee By Manager function that those will be taken into account for this project grade. Additionally, I do plan on going back at a later date to redo this section again and get it working.
 
 
 ## Resources
@@ -66,7 +71,7 @@ On 10-6-2020, I spent some time during the lunch break listening to TA- Peter Co
 
 Later that afternoon, I spent some time with my tutor, Andrew Hardemon - who helped me add in my Foreign Key values in the employeetracker.sql file, troubleshoot my View By Manager concat issues, and Employee Update Role function.
 
-He also worked with me to help troubleshoot the Employee Update Role function before it was at the end of our time.
+He also worked with me to help troubleshoot and help fix the Employee Update Role function before it was at the end of our time.
 
 
 ## Badge
