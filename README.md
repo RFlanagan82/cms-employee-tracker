@@ -39,7 +39,7 @@ For the bonus requirements: I also was able to successfully show employees by ma
 ![](./assets/view_emp_by_mgr.png)
 
 An additional bonus achieved is in the working Update Employee role function shown here:
-![](./assets/update_employee_role.png)
+![](./assets/update_employee_role%20.png)
 
 You'll notice that I have also created the following 2 sql files to support the datasets:
 
@@ -55,7 +55,7 @@ You'll notice that I have also created the following 2 sql files to support the 
 Although the first part of the "Add Employee Role" function works, I had significant challenges around, and ultimately wasn't successful in getting it to actually update the database.
 
 Here is the error...
-![](./assets/add_employee_function_error)
+![](./assets/add_employee_function_err.png)
 
 I understand that this was one of the minimum requirements of the assignment however I hope that by completing the Update Employee Role function and Search Employee By Manager function that those will be taken into account for this project grade. Additionally, I do plan on going back at a later date to redo this section again and get it working.
 
